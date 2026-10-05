@@ -1,0 +1,478 @@
+{
+  "authors": [
+    {
+      "id": "anna",
+      "name": "Anna Berg",
+      "role": "Frontend"
+    },
+    {
+      "id": "malte",
+      "name": "Malte Krüger",
+      "role": "Backend"
+    },
+    {
+      "id": "sina",
+      "name": "Sina Okafor",
+      "role": "Daten & KI"
+    },
+    {
+      "id": "jonas",
+      "name": "Jonas Weber",
+      "role": "Infrastruktur"
+    }
+  ],
+  "follows": [
+    [
+      "anna",
+      "sina"
+    ],
+    [
+      "anna",
+      "malte"
+    ],
+    [
+      "malte",
+      "jonas"
+    ],
+    [
+      "jonas",
+      "sina"
+    ]
+  ],
+  "tags": [
+    {
+      "id": "rust",
+      "label": "Rust"
+    },
+    {
+      "id": "datenbanken",
+      "label": "Datenbanken"
+    },
+    {
+      "id": "postgres",
+      "label": "PostgreSQL"
+    },
+    {
+      "id": "ki",
+      "label": "KI"
+    },
+    {
+      "id": "rag",
+      "label": "RAG"
+    },
+    {
+      "id": "frontend",
+      "label": "Frontend"
+    },
+    {
+      "id": "css",
+      "label": "CSS"
+    },
+    {
+      "id": "a11y",
+      "label": "Barrierefreiheit"
+    },
+    {
+      "id": "performance",
+      "label": "Performance"
+    },
+    {
+      "id": "edge",
+      "label": "Edge Computing"
+    },
+    {
+      "id": "wasm",
+      "label": "WebAssembly"
+    }
+  ],
+  "tagRelations": [
+    [
+      "postgres",
+      "datenbanken"
+    ],
+    [
+      "rag",
+      "ki"
+    ],
+    [
+      "rag",
+      "datenbanken"
+    ],
+    [
+      "wasm",
+      "rust"
+    ],
+    [
+      "wasm",
+      "edge"
+    ],
+    [
+      "css",
+      "frontend"
+    ],
+    [
+      "a11y",
+      "frontend"
+    ],
+    [
+      "performance",
+      "edge"
+    ]
+  ],
+  "articles": [
+    {
+      "id": "pgvector_einstieg",
+      "author": "malte",
+      "tags": [
+        "postgres",
+        "ki",
+        "datenbanken"
+      ],
+      "title": "Vektorsuche mit pgvector",
+      "summary": "Embeddings direkt in PostgreSQL speichern und per Ähnlichkeit abfragen.",
+      "content": "Mit der Erweiterung pgvector speichert PostgreSQL Embeddings als eigenen Datentyp. Ein HNSW-Index beschleunigt die Suche nach den nächsten Nachbarn. Für viele Anwendungen ersetzt das eine separate Vektordatenbank.",
+      "metadata": {
+        "language": "de",
+        "readingTime": 7,
+        "level": "fortgeschritten"
+      }
+    },
+    {
+      "id": "rag_chunking",
+      "author": "sina",
+      "tags": [
+        "rag",
+        "ki"
+      ],
+      "title": "Chunking-Strategien für RAG",
+      "summary": "Wie man Dokumente zerlegt, damit ein Sprachmodell die richtigen Passagen findet.",
+      "content": "Retrieval Augmented Generation steht und fällt mit der Zerlegung der Quelltexte. Zu kleine Abschnitte verlieren Kontext, zu große verwässern die Ähnlichkeitssuche. Überlappende Fenster und Abschnitte entlang von Überschriften sind ein guter Startpunkt.",
+      "metadata": {
+        "language": "de",
+        "readingTime": 9,
+        "level": "fortgeschritten"
+      }
+    },
+    {
+      "id": "embeddings_verstehen",
+      "author": "sina",
+      "tags": [
+        "ki"
+      ],
+      "title": "Embeddings verstehen",
+      "summary": "Warum Texte als Vektoren verglichen werden können.",
+      "content": "Ein Embedding-Modell bildet einen Text auf einen Vektor ab, sodass inhaltlich ähnliche Texte nahe beieinander liegen. Die Kosinus-Ähnlichkeit misst den Winkel zwischen zwei Vektoren. So findet eine semantische Suche Treffer, die kein gemeinsames Wort enthalten.",
+      "metadata": {
+        "language": "de",
+        "readingTime": 6,
+        "level": "einsteiger"
+      }
+    },
+    {
+      "id": "wissensgraph_agenten",
+      "author": "sina",
+      "tags": [
+        "ki",
+        "datenbanken"
+      ],
+      "title": "Wissensgraphen als Gedächtnis für Agenten",
+      "summary": "Beziehungen zwischen Personen, Firmen und Dokumenten für KI-Agenten nutzbar machen.",
+      "content": "Ein Agent, der nur ähnliche Textstellen findet, kennt keine Zusammenhänge. Ein Wissensgraph hält fest, wer wo arbeitet und welches Dokument welches Produkt betrifft. Kombiniert mit Vektorsuche entstehen Antworten, die Kontext und Beziehungen berücksichtigen.",
+      "metadata": {
+        "language": "de",
+        "readingTime": 8,
+        "level": "fortgeschritten"
+      }
+    },
+    {
+      "id": "postgres_volltextsuche",
+      "author": "malte",
+      "tags": [
+        "postgres",
+        "datenbanken"
+      ],
+      "title": "Volltextsuche ohne Elasticsearch",
+      "summary": "tsvector, GIN-Index und Ranking in PostgreSQL.",
+      "content": "PostgreSQL bringt mit tsvector und tsquery eine brauchbare Volltextsuche mit. Ein GIN-Index hält die Abfragen schnell, ts_rank sortiert nach Relevanz. Erst bei Facetten, Tippfehlertoleranz und sehr großen Datenmengen lohnt ein eigener Suchserver.",
+      "metadata": {
+        "language": "de",
+        "readingTime": 6,
+        "level": "einsteiger"
+      }
+    },
+    {
+      "id": "graph_datenbanken_wann",
+      "author": "malte",
+      "tags": [
+        "datenbanken"
+      ],
+      "title": "Wann sich eine Graphdatenbank lohnt",
+      "summary": "Rekursive Joins gegen echte Kantentraversierung.",
+      "content": "Freundschaften, Empfehlungen und Abhängigkeiten lassen sich relational mit rekursiven Abfragen abbilden. Ab mehreren Ebenen Tiefe werden diese Abfragen aber schwer lesbar und langsam. Graphdatenbanken speichern Kanten als eigene Objekte und traversieren sie direkt.",
+      "metadata": {
+        "language": "de",
+        "readingTime": 7,
+        "level": "fortgeschritten"
+      }
+    },
+    {
+      "id": "sqlite_im_browser",
+      "author": "jonas",
+      "tags": [
+        "datenbanken",
+        "wasm"
+      ],
+      "title": "SQLite im Browser mit WebAssembly",
+      "summary": "Eine relationale Datenbank lokal im Tab, gespeichert im Origin Private File System.",
+      "content": "Über WebAssembly läuft SQLite vollständig im Browser. Mit dem Origin Private File System bleiben die Daten auch nach einem Neuladen erhalten. Damit werden Offline-Anwendungen möglich, die erst später mit einem Server synchronisieren.",
+      "metadata": {
+        "language": "de",
+        "readingTime": 7,
+        "level": "fortgeschritten"
+      }
+    },
+    {
+      "id": "rust_ownership",
+      "author": "jonas",
+      "tags": [
+        "rust"
+      ],
+      "title": "Ownership in Rust",
+      "summary": "Speichersicherheit ohne Garbage Collector.",
+      "content": "Jeder Wert in Rust hat genau einen Besitzer. Ausleihen ist erlaubt, solange der Compiler beweisen kann, dass keine Referenz länger lebt als ihr Wert. Daraus folgt Speichersicherheit ohne Laufzeitkosten.",
+      "metadata": {
+        "language": "de",
+        "readingTime": 8,
+        "level": "einsteiger"
+      }
+    },
+    {
+      "id": "rust_webassembly",
+      "author": "jonas",
+      "tags": [
+        "rust",
+        "wasm"
+      ],
+      "title": "Rust nach WebAssembly kompilieren",
+      "summary": "wasm-bindgen, wasm-pack und die Grenze zwischen JavaScript und Rust.",
+      "content": "Rust eignet sich gut als Quellsprache für WebAssembly, weil es ohne eigene Laufzeit auskommt. wasm-bindgen erzeugt die Verbindung zu JavaScript. Teuer wird vor allem das Kopieren großer Daten über die Grenze zwischen beiden Welten.",
+      "metadata": {
+        "language": "de",
+        "readingTime": 9,
+        "level": "fortgeschritten"
+      }
+    },
+    {
+      "id": "edge_functions_latenz",
+      "author": "jonas",
+      "tags": [
+        "edge",
+        "performance"
+      ],
+      "title": "Edge Functions und Latenz",
+      "summary": "Code nah am Nutzer ausführen und trotzdem nicht auf die Datenbank warten.",
+      "content": "Eine Funktion am Edge antwortet schnell, solange sie keine weit entfernte Datenbank fragen muss. Sonst wandert die Latenz nur an eine andere Stelle. Caches, Lese-Replikate oder eingebettete Datenbanken lösen das Problem auf unterschiedliche Weise.",
+      "metadata": {
+        "language": "de",
+        "readingTime": 6,
+        "level": "fortgeschritten"
+      }
+    },
+    {
+      "id": "core_web_vitals",
+      "author": "anna",
+      "tags": [
+        "performance",
+        "frontend"
+      ],
+      "title": "Core Web Vitals im Alltag",
+      "summary": "LCP, INP und CLS messen und gezielt verbessern.",
+      "content": "Largest Contentful Paint misst, wann der wichtigste Inhalt sichtbar ist. Interaction to Next Paint bewertet die Reaktionszeit auf Eingaben, Cumulative Layout Shift das Springen des Layouts. Felddaten aus echten Besuchen sind aussagekräftiger als Labormessungen.",
+      "metadata": {
+        "language": "de",
+        "readingTime": 8,
+        "level": "einsteiger"
+      }
+    },
+    {
+      "id": "bilder_optimieren",
+      "author": "anna",
+      "tags": [
+        "performance",
+        "frontend"
+      ],
+      "title": "Bilder richtig ausliefern",
+      "summary": "AVIF, WebP, srcset und Lazy Loading.",
+      "content": "Bilder sind auf den meisten Seiten der größte Teil der übertragenen Daten. Moderne Formate wie AVIF und WebP sparen deutlich Bytes, srcset liefert die passende Größe pro Gerät. Das wichtigste Bild über dem Falz sollte nicht lazy geladen werden.",
+      "metadata": {
+        "language": "de",
+        "readingTime": 5,
+        "level": "einsteiger"
+      }
+    },
+    {
+      "id": "css_container_queries",
+      "author": "anna",
+      "tags": [
+        "css",
+        "frontend"
+      ],
+      "title": "Container Queries in der Praxis",
+      "summary": "Komponenten, die auf ihren eigenen Platz reagieren statt auf den Viewport.",
+      "content": "Media Queries kennen nur die Breite des Fensters. Container Queries fragen den Platz ab, den eine Komponente tatsächlich hat. Dieselbe Karte kann so in der Seitenleiste und im Hauptbereich unterschiedlich aussehen.",
+      "metadata": {
+        "language": "de",
+        "readingTime": 5,
+        "level": "einsteiger"
+      }
+    },
+    {
+      "id": "css_cascade_layers",
+      "author": "anna",
+      "tags": [
+        "css"
+      ],
+      "title": "Cascade Layers ordnen das CSS",
+      "summary": "Mit @layer die Reihenfolge von Basis, Komponenten und Utilities festlegen.",
+      "content": "Cascade Layers legen fest, welche Stilschicht gewinnt, unabhängig von der Spezifität einzelner Selektoren. Reset, Komponenten und Utilities bekommen jeweils eine eigene Ebene. Das beendet viele Kämpfe mit important.",
+      "metadata": {
+        "language": "de",
+        "readingTime": 5,
+        "level": "fortgeschritten"
+      }
+    },
+    {
+      "id": "fokus_sichtbar",
+      "author": "anna",
+      "tags": [
+        "a11y",
+        "frontend"
+      ],
+      "title": "Sichtbarer Fokus für Tastaturnutzer",
+      "summary": "focus-visible, Kontrast und die Anforderungen aus WCAG 2.2.",
+      "content": "Wer mit der Tastatur navigiert, muss jederzeit sehen, wo er sich befindet. WCAG 2.2 verlangt einen Fokusindikator, der nicht von anderen Elementen verdeckt wird. Mit focus-visible erscheint er nur dann, wenn er gebraucht wird.",
+      "metadata": {
+        "language": "de",
+        "readingTime": 6,
+        "level": "einsteiger"
+      }
+    },
+    {
+      "id": "formulare_barrierefrei",
+      "author": "anna",
+      "tags": [
+        "a11y",
+        "frontend"
+      ],
+      "title": "Barrierefreie Formulare",
+      "summary": "Labels, Fehlermeldungen und Pflichtfelder für Screenreader verständlich machen.",
+      "content": "Jedes Eingabefeld braucht ein sichtbares, programmatisch verknüpftes Label. Fehlermeldungen gehören direkt an das Feld und werden mit aria-describedby angekündigt. Platzhaltertext ist kein Ersatz für eine Beschriftung.",
+      "metadata": {
+        "language": "de",
+        "readingTime": 7,
+        "level": "einsteiger"
+      }
+    },
+    {
+      "id": "realtime_websockets",
+      "author": "malte",
+      "tags": [
+        "performance"
+      ],
+      "title": "Realtime mit WebSockets statt Polling",
+      "summary": "Änderungen an den Client schieben, statt ihn ständig fragen zu lassen.",
+      "content": "Polling erzeugt viele Anfragen, die meistens nichts Neues liefern. Über eine WebSocket-Verbindung schickt der Server Änderungen genau dann, wenn sie entstehen. Dafür muss jemand die offenen Verbindungen und ihren Zustand verwalten.",
+      "metadata": {
+        "language": "de",
+        "readingTime": 6,
+        "level": "einsteiger"
+      }
+    },
+    {
+      "id": "multi_tenancy_saas",
+      "author": "malte",
+      "tags": [
+        "datenbanken",
+        "postgres"
+      ],
+      "title": "Mandantentrennung in SaaS-Anwendungen",
+      "summary": "Eigene Datenbank, eigenes Schema oder Row Level Security.",
+      "content": "Mandanten lassen sich über getrennte Datenbanken, getrennte Schemas oder eine Spalte mit Row Level Security trennen. Jede Variante verschiebt Aufwand zwischen Betrieb und Anwendung. Entscheidend ist, wie streng die Isolation sein muss und wie viele Mandanten es werden.",
+      "metadata": {
+        "language": "de",
+        "readingTime": 8,
+        "level": "fortgeschritten"
+      }
+    },
+    {
+      "id": "local_first_sync",
+      "author": "jonas",
+      "tags": [
+        "datenbanken",
+        "edge"
+      ],
+      "title": "Local-First und Synchronisation",
+      "summary": "Daten zuerst auf dem Gerät, der Server holt später auf.",
+      "content": "Local-First-Anwendungen schreiben zuerst in eine lokale Datenbank und bleiben offline benutzbar. Die Synchronisation mit dem Server läuft im Hintergrund und muss Konflikte auflösen. CRDTs sind dafür ein verbreiteter Ansatz.",
+      "metadata": {
+        "language": "de",
+        "readingTime": 7,
+        "level": "fortgeschritten"
+      }
+    },
+    {
+      "id": "semantische_suche_shop",
+      "author": "sina",
+      "tags": [
+        "ki",
+        "rag"
+      ],
+      "title": "Semantische Produktsuche",
+      "summary": "Kunden finden Produkte auch dann, wenn sie andere Wörter verwenden als der Katalog.",
+      "content": "Wer nach einer warmen Jacke für den Winter sucht, findet mit klassischer Stichwortsuche keinen Parka. Embeddings der Produktbeschreibungen schließen diese Lücke. Kombiniert mit Filtern auf Preis und Verfügbarkeit entsteht eine Suche, die Absicht versteht.",
+      "metadata": {
+        "language": "de",
+        "readingTime": 6,
+        "level": "einsteiger"
+      }
+    }
+  ],
+  "comments": [
+    {
+      "author": "anna",
+      "article": "pgvector_einstieg",
+      "text": "Reicht HNSW auch für ein paar Millionen Vektoren?",
+      "rating": 5
+    },
+    {
+      "author": "jonas",
+      "article": "pgvector_einstieg",
+      "text": "Gute Einführung, der Abschnitt zum Index hilft.",
+      "rating": 4
+    },
+    {
+      "author": "malte",
+      "article": "rag_chunking",
+      "text": "Überlappende Fenster haben bei uns viel gebracht.",
+      "rating": 5
+    },
+    {
+      "author": "anna",
+      "article": "wissensgraph_agenten",
+      "text": "Genau die Kombination fehlt in den meisten RAG-Demos.",
+      "rating": 5
+    },
+    {
+      "author": "sina",
+      "article": "graph_datenbanken_wann",
+      "text": "Rekursive CTEs sind besser als ihr Ruf.",
+      "rating": 3
+    },
+    {
+      "author": "malte",
+      "article": "sqlite_im_browser",
+      "text": "Wie groß darf die Datenbank im OPFS werden?",
+      "rating": 4
+    }
+  ]
+}
