@@ -1,0 +1,108 @@
+---
+import Base from "../layouts/Base.astro";
+---
+<Base title="Local notes">
+  <h1>Local notes</h1>
+  <p class="muted">
+    SurrealDB runs as WebAssembly inside this tab, no server involved. It is meant to persist to
+    IndexedDB; with <code>@surrealdb/wasm</code> 3.0.3 that fails and the page falls back to memory
+    (see the status line below).
+  </p>
+  <p class="status" id="status">Starting engine…</p>
+
+  <form id="add">
+    <input name="text" type="text" placeholder="New note" required />
+    <button>Add</button>
+  </form>
+
+  <form id="search">
+    <input name="q" type="search" placeholder="Full-text search (German stemmer)" />
+    <button>Search</button>
+  </form>
+
+  <ul id="notes"></ul>
+</Base>
+
+<script>
+  import { Surreal, Table } from "surrealdb";
+  import { createWasmEngines } from "@surrealdb/wasm";
+
+  type Note = { text: string; at: string; snippet?: string };
+
+  const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as T;
+  const status = $("status");
+  const list = $<HTMLUListElement>("notes");
+  const started = performance.now();
+
+  // @surrealdb/wasm 3.0.3 fails on IndexedDB (surrealdb/surrealdb.js#571, fixed upstream but
+  // not released as of October 2026). Fall back to memory so the rest of the page still works.
+  async function openDatabase(): Promise<{ db: Surreal; storage: string }> {
+    const scope = { namespace: "local", database: "notes" };
+    try {
+      const db = new Surreal({ engines: createWasmEngines() });
+      await db.connect("indxdb://surrealdb-content-demo");
+      await db.use(scope);
+      return { db, storage: "IndexedDB" };
+    } catch (error) {
+      console.warn("IndexedDB storage failed, using memory:", error);
+      const db = new Surreal({ engines: createWasmEngines() });
+      await db.connect("mem://");
+      await db.use(scope);
+      return { db, storage: "memory (IndexedDB failed, see surrealdb/surrealdb.js#571)" };
+    }
+  }
+
+  const { db, storage } = await openDatabase();
+
+  // Same schema features as on the server: typed fields, analyzer, full-text index.
+  await db.query(`
+    DEFINE TABLE IF NOT EXISTS note SCHEMAFULL;
+    DEFINE FIELD IF NOT EXISTS text ON note TYPE string;
+    DEFINE FIELD IF NOT EXISTS at   ON note TYPE datetime DEFAULT time::now();
+    DEFINE ANALYZER IF NOT EXISTS german TOKENIZERS class FILTERS lowercase, ascii, snowball(german);
+    DEFINE INDEX IF NOT EXISTS note_text ON note FIELDS text FULLTEXT ANALYZER german BM25 HIGHLIGHTS;
+  `);
+
+  function render(notes: Note[]) {
+    list.replaceChildren(
+      ...notes.map((n) => {
+        const li = document.createElement("li");
+        li.textContent = n.snippet ?? n.text;
+        return li;
+      }),
+    );
+  }
+
+  async function showAll() {
+    const [notes] = await db.query<[Note[]]>("SELECT text, at FROM note ORDER BY at DESC");
+    render(notes);
+    return notes.length;
+  }
+
+  const count = await showAll();
+  const { version } = await db.version();
+  status.textContent = `${version} in WebAssembly, storage: ${storage}, ${count} notes, ready after ${Math.round(performance.now() - started)} ms.`;
+
+  // Live query inside the tab: the list follows every change without manual refresh.
+  const live = await db.live(new Table("note"));
+  live.subscribe(() => showAll());
+
+  $<HTMLFormElement>("add").addEventListener("submit", async (event) => {
+    event.preventDefault();
+    const form = event.target as HTMLFormElement;
+    await db.query("CREATE note SET text = $text", { text: String(new FormData(form).get("text")) });
+    form.reset();
+  });
+
+  $<HTMLFormElement>("search").addEventListener("submit", async (event) => {
+    event.preventDefault();
+    const q = String(new FormData(event.target as HTMLFormElement).get("q")).trim();
+    if (!q) return void showAll();
+    const [hits] = await db.query<[Note[]]>(
+      `SELECT text, at, search::highlight("[", "]", 1) AS snippet, search::score(1) AS score
+       FROM note WHERE text @1@ $q ORDER BY score DESC`,
+      { q },
+    );
+    render(hits);
+  });
+</script>

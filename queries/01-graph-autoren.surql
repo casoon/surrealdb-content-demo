@@ -1,4 +1,4 @@
--- Wer hat was geschrieben? Die Kante wird in beide Richtungen gelesen.
+-- Who wrote what? Edges are traversed in both directions.
 SELECT
     title,
     <-wrote<-person.name AS authors,

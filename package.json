@@ -3,16 +3,24 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "description": "Begleit-Repo zur Insights-Serie über SurrealDB: ein kleines Content-System mit Dokumenten, Graph, Volltext und Vektorsuche.",
+  "description": "Companion repo for the CASOON Insights series on SurrealDB: a small content system with documents, graph edges, full-text and vector search in one database.",
   "license": "MIT",
   "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "check": "astro check",
     "embed": "node scripts/embed.ts",
     "seed": "node scripts/seed.ts",
-    "query": "node scripts/query.ts"
+    "query": "node scripts/query.ts",
+    "server:install": "sh scripts/install-server.sh",
+    "server": "bin/surreal start --user root --pass root --bind 127.0.0.1:8000 --postgres-bind 127.0.0.1:5433 surrealkv://.data/server",
+    "seed:server": "SURREAL_URL=ws://127.0.0.1:8000 node scripts/seed.ts"
   },
   "dependencies": {
     "@huggingface/transformers": "^4.3.0",
     "@surrealdb/node": "^3.0.3",
+    "@surrealdb/wasm": "^3.0.3",
+    "astro": "^7.3.5",
     "surrealdb": "^2.0.10"
   },
   "engines": {

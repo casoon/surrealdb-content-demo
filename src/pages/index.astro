@@ -1,0 +1,118 @@
+---
+import Base from "../layouts/Base.astro";
+---
+<Base title="Live comments">
+  <h1>Live comments</h1>
+  <p class="muted">
+    The browser talks to SurrealDB directly over WebSocket. Sign-up, permissions and live updates
+    come from <code>db/access.surql</code>; there is no API layer. Open this page in two windows.
+  </p>
+
+  <form id="auth">
+    <input name="name" type="text" placeholder="Name" required />
+    <input name="email" type="email" placeholder="E-mail" required />
+    <input name="pass" type="password" placeholder="Password" minlength="8" required />
+    <button name="mode" value="signup">Sign up</button>
+    <button name="mode" value="signin" formnovalidate>Sign in</button>
+  </form>
+  <p class="status" id="status">Not signed in.</p>
+
+  <label>Article <select id="article"></select></label>
+
+  <form id="comment">
+    <input name="text" type="text" placeholder="Your comment" required />
+    <select name="rating">
+      <option>5</option><option>4</option><option>3</option><option>2</option><option>1</option>
+    </select>
+    <button>Post</button>
+  </form>
+
+  <ul id="comments"></ul>
+</Base>
+
+<script>
+  import { RecordId, Surreal, Table } from "surrealdb";
+
+  type Comment = { id: RecordId; text: string; rating: number; from: string; out: RecordId };
+
+  const db = new Surreal();
+  const scope = { namespace: "demo", database: "content" };
+  const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as T;
+  const status = $("status");
+  const select = $<HTMLSelectElement>("article");
+  const list = $<HTMLUListElement>("comments");
+
+  await db.connect("ws://127.0.0.1:8000");
+  await db.use(scope);
+
+  function render(comments: Comment[]) {
+    list.replaceChildren(
+      ...comments.map((c) => {
+        const li = document.createElement("li");
+        li.textContent = `${c.from} (${c.rating}/5): ${c.text}`;
+        return li;
+      }),
+    );
+  }
+
+  async function loadComments() {
+    const [comments] = await db.query<[Comment[]]>(
+      "SELECT id, text, rating, in.name AS from, out FROM commented WHERE out = $article ORDER BY at",
+      { article: new RecordId("article", select.value) },
+    );
+    render(comments);
+  }
+
+  async function loadArticles() {
+    const [articles] = await db.query<[{ id: RecordId; title: string }[]]>(
+      "SELECT id, title FROM article ORDER BY title",
+    );
+    select.replaceChildren(
+      ...articles.map((a) => new Option(a.title, String(a.id.id))),
+    );
+    select.value = "rag_chunking";
+    await loadComments();
+  }
+
+  async function watchComments() {
+    const live = await db.live(new Table("commented"));
+    live.subscribe(async (message) => {
+      status.textContent = `Live: ${message.action} on ${String(message.recordId)}`;
+      await loadComments();
+    });
+  }
+
+  $<HTMLFormElement>("auth").addEventListener("submit", async (event) => {
+    event.preventDefault();
+    const form = new FormData(event.target as HTMLFormElement);
+    const mode = (event.submitter as HTMLButtonElement).value;
+    const variables = Object.fromEntries(form) as Record<string, string>;
+    try {
+      if (mode === "signup") await db.signup({ ...scope, access: "reader", variables });
+      else await db.signin({ ...scope, access: "reader", variables });
+      const [name] = await db.query<[string]>("RETURN $auth.name");
+      status.textContent = `Signed in as ${name}.`;
+      await loadArticles();
+      await watchComments();
+    } catch (error) {
+      status.textContent = `Error: ${(error as Error).message}`;
+    }
+  });
+
+  select.addEventListener("change", loadComments);
+
+  $<HTMLFormElement>("comment").addEventListener("submit", async (event) => {
+    event.preventDefault();
+    const form = event.target as HTMLFormElement;
+    const data = new FormData(form);
+    await db.query(
+      "RELATE $auth->commented->$article SET text = $text, rating = $rating",
+      {
+        article: new RecordId("article", select.value),
+        text: String(data.get("text")),
+        rating: Number(data.get("rating")),
+      },
+    );
+    form.reset();
+  });
+</script>

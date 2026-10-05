@@ -1,4 +1,4 @@
--- Semantische Suche, aber nur Artikel von Leuten, denen Anna folgt.
+-- Semantic search, restricted to articles by people Anna follows.
 LET $followed = person:anna->follows->person;
 
 SELECT

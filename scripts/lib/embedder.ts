@@ -1,6 +1,6 @@
 import { pipeline } from "@huggingface/transformers";
 
-// Mehrsprachiges Satzmodell, 384 Dimensionen, läuft lokal ohne API-Key.
+// Multilingual sentence model, 384 dimensions, runs locally without an API key.
 export const MODEL = "Xenova/paraphrase-multilingual-MiniLM-L12-v2";
 export const DIMENSION = 384;
 

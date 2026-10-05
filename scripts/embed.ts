@@ -1,5 +1,5 @@
-// Berechnet die Embeddings aller Artikel einmalig und legt sie in data/embeddings.json ab.
-// Das Ergebnis ist eingecheckt, damit `pnpm seed` ohne Modell-Download reproduzierbar bleibt.
+// Computes the embeddings of all articles once and writes them to data/embeddings.json.
+// The result is committed so that `pnpm seed` stays reproducible without downloading the model.
 import { readFile, writeFile } from "node:fs/promises";
 import { embed, MODEL } from "./lib/embedder.ts";
 

@@ -1,4 +1,4 @@
--- Kommentare sind Kanten mit eigenen Feldern: Text, Bewertung, Zeitstempel.
+-- Comments are edges with fields of their own: text, rating, timestamp.
 SELECT
     title,
     <-commented.{ from: in.name, rating, text } AS comments,

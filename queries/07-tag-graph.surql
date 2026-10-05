@@ -1,4 +1,4 @@
--- Artikel zu "Datenbanken" inklusive aller Tags, die darauf verweisen.
+-- Articles tagged "Datenbanken", including all tags related to it.
 LET $tags = array::union([tag:datenbanken], tag:datenbanken<-related_to<-tag);
 
 SELECT

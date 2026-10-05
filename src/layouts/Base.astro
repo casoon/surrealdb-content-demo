@@ -1,0 +1,32 @@
+---
+interface Props {
+  title: string;
+}
+const { title } = Astro.props;
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title} · surrealdb-content-demo</title>
+    <style is:global>
+      :root { color-scheme: light dark; font-family: system-ui, sans-serif; line-height: 1.5; }
+      body { max-width: 46rem; margin: 2rem auto; padding: 0 1rem; }
+      nav { display: flex; gap: 1rem; margin-bottom: 2rem; }
+      form { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 1rem 0; }
+      input, select, button { font: inherit; padding: 0.35rem 0.6rem; }
+      input[type="text"], input[type="search"] { flex: 1 1 14rem; }
+      ul { padding-left: 1.2rem; }
+      .muted { opacity: 0.7; font-size: 0.9em; }
+      .status { font-family: ui-monospace, monospace; font-size: 0.85em; }
+    </style>
+  </head>
+  <body>
+    <nav>
+      <a href="/">Live comments (server)</a>
+      <a href="/local/">Local notes (WASM)</a>
+    </nav>
+    <slot />
+  </body>
+</html>

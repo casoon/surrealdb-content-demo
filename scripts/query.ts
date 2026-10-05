@@ -1,5 +1,5 @@
-// Führt eine .surql-Datei gegen die eingebettete Datenbank aus.
-// Mit --text "…" wird der Text eingebettet und als $query_vec übergeben.
+// Runs a .surql file against the database (embedded, or the server via SURREAL_URL).
+// With --text "…" the text is embedded and passed as $query_vec.
 import { readFile } from "node:fs/promises";
 import { parseArgs } from "node:util";
 import { inspect } from "node:util";
@@ -13,7 +13,7 @@ const surql = await readFile(positionals[0], "utf8");
 const params: Record<string, unknown> = {};
 
 if (surql.includes("$query_vec")) {
-  if (!values.text) throw new Error('Diese Abfrage braucht --text "…"');
+  if (!values.text) throw new Error('This query needs --text "…"');
   const { embed } = await import("./lib/embedder.ts");
   params.query_vec = await embed(values.text);
   params.query_text = values.text;

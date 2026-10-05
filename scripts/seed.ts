@@ -1,15 +1,17 @@
-// Legt die Datenbank neu an: Schema, Dokumente, Beziehungen, Embeddings.
+// Recreates the database: schema, documents, relations, embeddings.
 import { readFile, rm } from "node:fs/promises";
-import { closeAndExit, open } from "./lib/db.ts";
+import { closeAndExit, EMBEDDED_DIR, IS_EMBEDDED, open } from "./lib/db.ts";
 
-await rm(".data", { recursive: true, force: true });
+if (IS_EMBEDDED) await rm(EMBEDDED_DIR, { recursive: true, force: true });
 const db = await open();
+if (!IS_EMBEDDED) await db.query("REMOVE DATABASE IF EXISTS content; DEFINE DATABASE content;");
 
 const content = JSON.parse(await readFile("data/content.json", "utf8"));
 const { vectors } = JSON.parse(await readFile("data/embeddings.json", "utf8"));
 
 await db.query(await readFile("db/schema.surql", "utf8"));
-console.log("✓ Schema");
+await db.query(await readFile("db/access.surql", "utf8"));
+console.log("✓ schema");
 
 await db.query(
   `
@@ -29,7 +31,7 @@ await db.query(
   content,
 );
 
-console.log("✓ Personen, Tags, Beziehungen");
+console.log("✓ people, tags, relations");
 for (const a of content.articles) {
   await db.query(
     `
@@ -44,7 +46,7 @@ for (const a of content.articles) {
   );
 }
 
-console.log("✓ Artikel mit Embeddings");
+console.log("✓ articles with embeddings");
 for (const c of content.comments) {
   await db.query(
     `
@@ -59,5 +61,5 @@ for (const c of content.comments) {
 const [counts] = await db.query(
   "RETURN { articles: count(SELECT * FROM article), edges: count(SELECT * FROM wrote, tagged, related_to, follows, commented) }",
 );
-console.log("Seed fertig:", counts);
+console.log("Seed complete:", counts);
 await closeAndExit(db);

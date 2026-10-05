@@ -1,4 +1,4 @@
--- Volltextsuche mit deutschem Stemmer: "Datenbanken" findet auch "Datenbank".
+-- Full-text search with a German stemmer: "Datenbanken" also matches "Datenbank".
 SELECT
     title,
     search::highlight("**", "**", 1) AS snippet,

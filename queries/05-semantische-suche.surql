@@ -1,4 +1,4 @@
--- Semantische Suche: die Frage wird eingebettet und als $query_vec übergeben.
+-- Semantic search: the question is embedded and passed as $query_vec.
 SELECT
     title,
     vector::distance::knn() AS distance

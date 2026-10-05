@@ -1,4 +1,4 @@
--- Nächste Nachbarn im Vektorraum: die ähnlichsten Artikel zu einem Artikel.
+-- Nearest neighbours in vector space: the articles most similar to one article.
 LET $vec = article:rag_chunking.embedding;
 
 SELECT title, vector::distance::knn() AS distance
