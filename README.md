@@ -86,6 +86,7 @@ pnpm dev                 # http://localhost:4321
 | `05-semantische-suche.surql` | semantic search with an embedded question |
 | `06-semantisch-mit-graph.surql` | the same search, filtered through the follow graph |
 | `07-tag-graph.surql` | finding articles through related tags |
+| `08-zwei-ebenen-follows.surql` | two-hop path: articles by authors followed by the people Anna follows |
 
 ## Versions and known issues
 
